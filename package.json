@@ -23,6 +23,14 @@
   "files": [
     "dist/**"
   ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "biome format",
+    "lint": "biome lint",
+    "test": "bun test",
+    "release": "release-it"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "latest",
