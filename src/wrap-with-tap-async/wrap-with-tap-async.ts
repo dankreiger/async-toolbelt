@@ -1,8 +1,6 @@
-import { tapAsync } from "../tap-async/index.ts";
-import type { UnaryAsyncFunction } from "../types.ts";
+import { tapAsync } from '../tap-async/index.ts';
+import type { AsyncFunction } from '../types.ts';
 
-export const wrapWithTapAsync = <const T>(
-	...fns: UnaryAsyncFunction<T, T>[]
-) => {
-	return fns.map((fn) => tapAsync(fn));
+export const wrapWithTapAsync = <const T>(...fns: AsyncFunction<T>[]) => {
+  return fns.map((fn) => tapAsync(fn));
 };
