@@ -33,13 +33,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@release-it/conventional-changelog": "9.0.4",
     "@types/bun": "latest",
-    "rxjs": "^7.8.1",
+    "release-it": "17.11.0",
     "tsup": "8.3.5"
   },
   "peerDependencies": {
     "@types/bun": "latest",
-    "release-it": "^17.10.0",
+    "release-it": "17.10.0",
     "typescript": "5.7.2"
   },
   "version": "0.0.2"
