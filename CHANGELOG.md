@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3](https://github.com/dankreiger/async-toolbelt/compare/0.1.2...0.1.3) (2024-12-23)
+
+### Bug Fixes
+
+* try bun config ([2a300e1](https://github.com/dankreiger/async-toolbelt/commit/2a300e17287979149ec17cf56f3d264f33af9578))
+
 ## [0.1.2](https://github.com/dankreiger/async-toolbelt/compare/0.1.1...0.1.2) (2024-12-23)
 
 ### Bug Fixes
