@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5](https://github.com/dankreiger/async-toolbelt/compare/0.1.4...0.1.5) (2024-12-25)
+
+### Bug Fixes
+
+* export aliases for fns ([29de46c](https://github.com/dankreiger/async-toolbelt/commit/29de46cb4be94ee83d13ed8f7da58a7e7a912364))
+
 ## [0.1.4](https://github.com/dankreiger/async-toolbelt/compare/0.1.3...0.1.4) (2024-12-23)
 
 ### Bug Fixes
