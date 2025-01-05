@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6](https://github.com/dankreiger/async-toolbelt/compare/0.1.5...0.1.6) (2025-01-05)
+
+### Bug Fixes
+
+* add testing and fix tap wrapper ([ecb3441](https://github.com/dankreiger/async-toolbelt/commit/ecb3441a3e4bb4c8f62fffae2a72cd266e1b7982))
+
 ## [0.1.5](https://github.com/dankreiger/async-toolbelt/compare/0.1.4...0.1.5) (2024-12-25)
 
 ### Bug Fixes
