@@ -25,6 +25,7 @@
 	"files": ["dist/**"],
 	"scripts": {
 		"build": "tsup",
+		"check": "biome check",
 		"dev": "tsup --watch",
 		"format": "biome format",
 		"lint": "biome lint",
