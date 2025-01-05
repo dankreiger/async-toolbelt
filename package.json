@@ -1,47 +1,50 @@
 {
-  "name": "async-toolbelt",
-  "license": "MIT",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
-    },
-    "./package.json": "./package.json",
-    "./*": "./*"
-  },
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "format": "biome format",
-    "lint": "biome lint",
-    "test": "bun --watch test --coverage",
-    "release": "release-it"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@release-it/conventional-changelog": "9.0.4",
-    "@types/bun": "1.1.14",
-    "release-it": "17.11.0",
-    "tsup": "8.3.5",
-    "type-fest": "4.31.0",
-    "typescript": "5.7.2"
-  },
-  "peerDependencies": {
-    "typescript": ">=5.7.2"
-  },
-  "version": "0.1.6"
+	"name": "async-toolbelt",
+	"version": "0.1.6",
+	"license": "MIT",
+	"author": "Dan Kreiger <dankreiger@gmail.com>",
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		},
+		"./package.json": "./package.json",
+		"./*": "./*"
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": ["dist/**"],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"format": "biome format",
+		"lint": "biome lint",
+		"release": "release-it",
+		"test": "bun --watch test --coverage"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@commitlint/cli": "19.6.1",
+		"@commitlint/config-conventional": "19.6.0",
+		"@release-it/conventional-changelog": "9.0.4",
+		"@types/bun": "1.1.14",
+		"lefthook": "1.10.1",
+		"release-it": "17.11.0",
+		"tsup": "8.3.5",
+		"type-fest": "4.31.0",
+		"typescript": "5.7.2"
+	},
+	"peerDependencies": {
+		"typescript": ">=5.7.2"
+	},
+	"packageManager": "bun@1.1.42"
 }
