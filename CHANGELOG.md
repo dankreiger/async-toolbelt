@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>0.1.7 (2025-01-05)</small>
+
+* fix: add map util ([01c49c1](https://github.com/dankreiger/async-toolbelt/commit/01c49c1))
+* fix: update commit hooks ([c003cb1](https://github.com/dankreiger/async-toolbelt/commit/c003cb1))
+* chore: try ci commands with bun ([08a28a7](https://github.com/dankreiger/async-toolbelt/commit/08a28a7))
+
 ## [0.1.6](https://github.com/dankreiger/async-toolbelt/compare/0.1.5...0.1.6) (2025-01-05)
 
 ### Bug Fixes
