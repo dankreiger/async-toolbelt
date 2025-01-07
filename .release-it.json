@@ -7,7 +7,7 @@
 		"publish": true
 	},
 	"hooks": {
-		"after:bump": "npm run build",
+		"after:bump": "bun run build && bunx biome check --write --unsafe dist",
 		"after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
 	},
 	"plugins": {

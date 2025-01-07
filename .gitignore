@@ -173,3 +173,10 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Temporary scripts
+__REMOVE-ME-*
+__REMOVE-ME-*
+
+# Don't ignore build tests
+!src/__dist-tests__

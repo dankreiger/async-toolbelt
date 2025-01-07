@@ -1,3 +1,9 @@
 {
-	"recommendations": ["biomejs.biome"]
+	"recommendations": [
+		"biomejs.biome",
+		"DavidAnson.vscode-markdownlint",
+		"bun-community.bun",
+		"streetsidesoftware.code-spell-checker"
+	],
+	"unwantedRecommendations": ["dbaeumer.vscode-eslint"]
 }

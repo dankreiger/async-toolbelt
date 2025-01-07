@@ -14,6 +14,7 @@ export default defineConfig(
 		...SHARED_CONFIG,
 		entry: ["src/index.ts"],
 		minify: true,
+		splitting: true,
 		format,
 	})),
 );

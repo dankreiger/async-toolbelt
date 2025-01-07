@@ -1,12 +1,12 @@
 import { describe, expect, it, mock } from "bun:test";
-import { tap, tapAsync } from "./tap-async.utils";
+import { tap } from "./tap";
 
-describe("tapAsync", () => {
+describe("tap", () => {
 	it("should return the input value unchanged", async () => {
 		const input = { value: 42 };
 		const tappedMock = mock();
 
-		const result = await tapAsync(tappedMock)(input);
+		const result = await tap(tappedMock)(input);
 
 		expect(result).toBe(input);
 		expect(tappedMock).toHaveBeenCalledWith(input);
@@ -19,7 +19,7 @@ describe("tapAsync", () => {
 		};
 
 		const input = 21;
-		await tapAsync(sideEffect)(input);
+		await tap(sideEffect)(input);
 
 		expect(sideEffectValue).toBe(42);
 	});
@@ -34,7 +34,7 @@ describe("tapAsync", () => {
 			value = x;
 		};
 
-		await tapAsync(sideEffect)(42);
+		await tap(sideEffect)(42);
 		expect(value).toBe(42);
 	});
 
@@ -44,7 +44,7 @@ describe("tapAsync", () => {
 			throw error;
 		};
 
-		await expect(tapAsync(failingFn)(42)).rejects.toThrow(error);
+		await expect(tap(failingFn)(42)).rejects.toThrow(error);
 	});
 
 	it("should work with tap alias", async () => {
@@ -68,7 +68,7 @@ describe("tapAsync", () => {
 			console.log(u.name);
 		};
 
-		const result = await tapAsync(logger)(user);
+		const result = await tap(logger)(user);
 
 		// TypeScript should recognize that result is of type User
 		expect(result.id).toBe(1);

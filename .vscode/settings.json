@@ -1,10 +1,14 @@
 {
-	"editor.defaultFormatter": "biomejs.biome",
-	"editor.formatOnSave": true,
-	"editor.codeActionsOnSave": {
-		"source.fixAll.biome": "explicit"
+	"material-icon-theme.folders.associations": {
+		"dist-tests": "dist"
 	},
-	"[markdown]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	"material-icon-theme.folders.customClones": [
+		{
+			"name": "dist-tests",
+			"base": "test",
+			"color": "cyan-500",
+			"lightColor": "cyan-700",
+			"folderNames": ["dist-tests"]
+		}
+	]
 }

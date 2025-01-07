@@ -1,16 +1,19 @@
+# JSON Schema
+# @see https://gist.github.com/dankreiger/dedf33c6d0bc5a6e2ba23684def02535
+
 # Validate commit messages
 commit-msg:
   commands:
     check-branch:
-      #   run: bun commit:protect
-      # 'lint commit message':
+      run: bun commit:protect
+    "lint commit message":
       run: bunx commitlint --edit {1}
 
 pre-commit:
   jobs:
     group:
-      name: lint
-      run: bun lint
+      name: lint and format (biome check)
+      run: bun run check:fix
       stage_fixed: true
     sort:
       run: bun sort
@@ -21,5 +24,15 @@ pre-commit:
 post-merge:
   commands:
     install-deps-postmerge:
-      run: pnpx install-deps-postmerge
-      tags: frontend
+      run: |
+        # capture info messages and any errors in a log file
+        exec >> log/hooks-out.log 2>&1
+
+        if git diff-tree --name-only --no-commit-id ORIG_HEAD HEAD | grep -q 'package.json'; then
+          echo "$(date): reinstalling deps since package.json changed"
+          yarn > /dev/null
+        else
+          echo "$(date): no changes detected in package.json"
+        fi
+
+        # link is needed: ln -fv [script location] .git/hooks/

@@ -22,24 +22,27 @@
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"dist/**"
-	],
+	"files": ["dist/**"],
 	"scripts": {
-		"build": "tsup",
+		"build": "bun clean && tsup",
+		"clean": "rm -rf dist",
 		"check": "biome check",
+		"check:fix": "biome check --write",
 		"dev": "tsup --watch",
 		"format": "biome format",
 		"lint": "biome lint",
 		"release": "release-it",
-		"test": "bun --watch test --coverage"
+		"test": "bun --watch test --coverage",
+		"test:ci": "bun test --coverage"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@commitlint/cli": "19.6.1",
 		"@commitlint/config-conventional": "19.6.0",
 		"@release-it/conventional-changelog": "9.0.4",
+		"@tsconfig/bun": "1.0.7",
 		"@types/bun": "1.1.14",
+		"effect": "3.12.1",
 		"lefthook": "1.10.1",
 		"release-it": "17.11.0",
 		"tsup": "8.3.5",
@@ -48,6 +51,5 @@
 	},
 	"peerDependencies": {
 		"typescript": ">=5.7.2"
-	},
-	"packageManager": "bun@1.1.42"
+	}
 }

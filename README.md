@@ -1,137 +1,282 @@
 # async-toolbelt
 
-A lightweight, modular utility library for managing asynchronous workflows in JavaScript and TypeScript.
+- [async-toolbelt](#async-toolbelt)
+  - [Key Features](#key-features)
+  - [Installation](#installation)
+  - [Usage Examples](#usage-examples)
+    - [1. Composing Functions with `pipe`](#1-composing-functions-with-pipe)
+    - [2. Adding Side Effects with `tap`](#2-adding-side-effects-with-tap)
+    - [3. Wrapping Functions with `wrapWithTap`](#3-wrapping-functions-with-wrapwithtap)
+    - [4. Transforming Values with `map`](#4-transforming-values-with-map)
+    - [5. Long Pipeline Example](#5-long-pipeline-example)
+  - [API Reference](#api-reference)
+    - [`pipe(input, ...fns)`](#pipeinput-fns)
+    - [`tap(fn)`](#tapfn)
+    - [`wrapWithTap(fns)`](#wrapwithtapfns)
+    - [`map(fn)`](#mapfn)
+  - [Development (Bun)](#development-bun)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Support](#support)
 
-🌟 Features
+A lightweight utility library for composing, transforming, and augmenting functions (synchronous or asynchronous) in JavaScript/TypeScript. Provides a unified API, full TypeScript support (including up to 18 chained transformations), and automatically selects ESM or CJS based on your environment.
 
-- Composable Pipelines: Chain async functions seamlessly with pipeAsync.
-- Side Effect Handlers: Debug or log values during async operations using tapAsync.
-- Function Wrapping: Extend or augment behavior of existing async functions with wrapWithTapAsync.
-- TypeScript Native: Full type definitions included.
+## Key Features
 
-📦 Installation
+- **Composable Pipelines** – Chain any combination of sync or async functions with `pipe`.
+- **Side Effects** – Insert logging or debugging without altering results using `tap`.
+- **Function Wrapping** – Extend or augment one or more functions with `wrapWithTap`.
+- **Mapping & Transformation** – Apply a single transformation using `map`.
+- **TypeScript Ready** – Includes comprehensive type definitions and overloads.
 
-Install using npm or yarn:
+## Installation
 
-```bash
-npm install async-toolbelt
+Use your preferred package manager:
+
+- **Bun**:
+
+  ```zsh
+  bun add --exact async-toolbelt
+  ```
+
+- **pnpm**:
+
+  ```zsh
+  pnpm add --save-exact async-toolbelt 
+  ```
+
+- **Yarn**:
+
+  ```zsh
+  yarn add --exact async-toolbelt
+  ```
+
+- **npm**:
+
+  ```zsh
+  npm install --save-exact async-toolbelt 
+  ```
+
+## Usage Examples
+
+> While these functions do not have an “Async” suffix, they handle both synchronous and asynchronous code seamlessly. Any sync function is wrapped in a promise under the hood.
+
+### 1. Composing Functions with `pipe`
+
+```ts
+import { pipe } from 'async-toolbelt';
+
+// Async example
+const addOneAsync = async (n: number) => n + 1;
+const squareAsync = async (n: number) => n * n;
+
+// Sync example
+const addOneSync = (n: number) => n + 1;
+const squareSync = (n: number) => n * n;
+
+// Async pipeline
+pipe(2, addOneAsync, squareAsync).then((result) => {
+  console.log(result); // 9
+});
+
+// Mixed pipeline
+pipe(2, addOneSync, squareAsync).then((result) => {
+  console.log(result); // 9
+});
+
+// Fully sync pipeline (still returns a promise)
+pipe(2, addOneSync, squareSync).then((result) => {
+  console.log(result); // 9
+});
 ```
 
-or
+### 2. Adding Side Effects with `tap`
 
-```bash
-yarn add async-toolbelt
+```ts
+import { tap } from 'async-toolbelt';
+
+const logValue = (val: unknown) => {
+  console.log('Received:', val);
+};
+
+tap(logValue)('Hello World');
+// Logs: "Received: Hello World"
+// Returns a Promise resolved to "Hello World"
 ```
 
-🛠️ Usage Examples
+### 3. Wrapping Functions with `wrapWithTap`
 
-1. Compose Functions with pipeAsync
+```ts
+import { wrapWithTap } from 'async-toolbelt';
 
-   ```ts
-   import { pipeAsync } from 'async-toolbelt';
+// Wrap multiple functions at once
+const wrappedFunctions = wrapWithTap([
+  async (val: string) => console.log('First effect:', val),
+  (val: string) => console.log('Second effect:', val.toUpperCase()),
+]);
 
-   const addOne = async (x: number) => x + 1;
-   const square = async (x: number) => x * x;
+// Each function logs and then returns the original input
+wrappedFunctions[0]('hello'); // Logs "First effect: hello"
+wrappedFunctions[1]('hello'); // Logs "Second effect: HELLO"
+```
 
-   const pipeline = pipeAsync(addOne, square);
+### 4. Transforming Values with `map`
 
-   pipeline(2).then((result) => {
-     console.log(result); // Output: 9
-   });
-   ```
+```ts
+import { map } from 'async-toolbelt';
 
-2. Log with tapAsync
+const doubleAsync = async (n: number) => n * 2;
+const doubleSync = (n: number) => n * 2;
 
-   ```ts
-   import { tapAsync } from 'async-toolbelt';
+// Using an async function
+map(doubleAsync)(3).then((res) => {
+  console.log('Async result:', res); // 6
+});
 
-   const logValue = async (value: any) => {
-     console.log('Value:', value);
-   };
+// Using a sync function
+map(doubleSync)(5).then((res) => {
+  console.log('Sync result:', res); // 10
+});
+```
 
-   const process = tapAsync(logValue);
+### 5. Long Pipeline Example
 
-   process('Hello World'); // Logs: Value: Hello World
-   ```
+Here’s a more **declarative** example illustrating how `pipe` can simplify a multi-step workflow. In real-world scenarios, you might fetch data, transform it, log progress, and handle both sync and async steps without deeply nested callbacks.
 
-3. Wrap Functions with wrapWithTapAsync
+```ts
+import { pipe, tap, map } from 'async-toolbelt';
 
-   ```ts
-   import { wrapWithTapAsync } from 'async-toolbelt';
+// Mock async function to fetch user data
+const fetchUser = async (id: number) => {
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  return { id, name: 'Alice', email: 'alice@example.com' };
+};
 
-   const logAndRun = wrapWithTapAsync(async (value: string) => {
-     console.log('Processing:', value);
-     return value.toUpperCase();
-   });
+// Convert user data to a string (sync function)
+const userToString = (user: { id: number; name: string; email: string }) =>
+  `[User #${user.id}]: ${user.name} <${user.email}>`;
 
-   logAndRun('hello').then((result) => {
-     console.log(result); // Logs: Processing: hello, then HELLO
-   });
-   ```
+// Log a message (sync or async)
+const logMessage = (msg: string) => {
+  console.log(`[LOG] ${msg}`);
+};
 
-📚 API Documentation
+// Asynchronously send notification
+const sendNotification = async (message: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  return `Notification sent with message: "${message}"`;
+};
 
-pipeAsync(...fns)
+// Build a pipeline that fetches a user, logs it, transforms to string, sends notification
+pipe(
+  1,               // userId
+  fetchUser,       // Step 1: fetch user data (async)
+  tap((u) => console.log('Fetched user:', u)), // Step 2: side-effect
+  userToString,    // Step 3: convert to string (sync)
+  tap(logMessage), // Step 4: additional side-effect
+  sendNotification // Step 5: final async operation
+).then((result) => {
+  console.log(result);
+  // Logs something like:
+  //   Fetched user: { id: 1, name: 'Alice', ...}
+  //   [LOG] [User #1]: Alice <alice@example.com>
+  //   Notification sent with message: "[User #1]: Alice <alice@example.com>"
+});
+```
 
-Chains multiple async functions into a single pipeline.
+In this pipeline:
 
-- Parameters: ...fns - Functions to pipe.
-- Returns: A new function executing the pipeline sequentially.
+1. `fetchUser` retrieves user data (async).
+2. `tap(...)` logs the raw user.
+3. `userToString` transforms it to a string (sync).
+4. Another `tap(logMessage)` logs the user string.
+5. `sendNotification` finalizes the process (async).
 
-tapAsync(fn)
+The promise-based design keeps everything **composable**, **flat**, and **declarative** without nested callbacks or complicated promise chains.
 
-Allows side effects (like logging or debugging) in an async flow without altering the result.
+---
 
-- Parameters: fn - Function executed for its side effects.
-- Returns: A function that passes through the original input.
+## API Reference
 
-wrapWithTapAsync(fn)
+### `pipe(input, ...fns)`
 
-Wraps an async function to extend its behavior.
+Executes a sequence of sync or async functions on an initial value. Supports up to 18 functions.
 
-- Parameters: fn - The function to wrap.
-- Returns: A wrapped version of the function.
+- **Parameters**  
+  - `input`: initial value  
+  - `...fns`: array of sync or async functions
+- **Returns**  
+  A `Promise` resolving to the final result
 
-🔧 Development
+### `tap(fn)`
 
-Clone and Install
+Inserts a side effect (e.g., logging) without changing the input.
 
-1. Clone the repository:
+- **Parameters**  
+  - `fn`: a sync or async function that receives the input
+- **Returns**  
+  A function that returns the original input as a `Promise`
+
+### `wrapWithTap(fns)`
+
+Wraps an array of functions so each function executes a side effect while returning the original input.
+
+- **Parameters**  
+  - `fns`: an array of sync or async functions
+- **Returns**  
+  An array of tapped functions
+
+### `map(fn)`
+
+Transforms an input with a single sync or async function.
+
+- **Parameters**  
+  - `fn`: a function taking the input and returning a new value
+- **Returns**  
+  A function that, given an input, returns a `Promise` of the transformed value
+
+---
+
+## Development (Bun)
+
+This project uses **Bun** as the development environment.
+
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/yourusername/async-toolbelt.git
    cd async-toolbelt
    ```
 
-2. Install dependencies:
+2. **Install dependencies** (via Bun):
 
    ```bash
-   npm install
+   bun install
    ```
 
-3. Build the project:
+3. **Build the project**:
 
    ```bash
-   npm run build
+   bun run build
    ```
 
-4. Run tests:
+4. **Run tests**:
 
    ```bash
-     npm test
+   bun test
    ```
 
-Contributing
+---
 
-We welcome contributions! Feel free to:
+## Contributing
 
-- Open issues for bugs or feature requests.
-- Submit pull requests with your improvements.
+Contributions are welcome. Please open issues or submit pull requests for features or improvements.
 
-📝 License
+## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+Distributed under the [MIT License](LICENSE).
 
-⭐ Support
+## Support
 
-If you find this package useful, consider starring the repository on GitHub!
+If you find this library valuable, please consider starring the repository on GitHub.

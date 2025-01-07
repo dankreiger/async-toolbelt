@@ -1,11 +1,11 @@
 import { describe, expect, it } from "bun:test";
-import { pipeAsync } from "../pipe-async";
-import { mapAsync } from "./map-async.utils";
+import { pipe } from "../pipe";
+import { map } from "./map";
 
-describe("mapAsync", () => {
+describe("map", () => {
 	it("should apply async function to input", async () => {
 		const double = async (x: number): Promise<number> => x * 2;
-		const doubleMapper = mapAsync(double);
+		const doubleMapper = map(double);
 
 		const result = await doubleMapper(5);
 		expect(result).toBe(10);
@@ -13,7 +13,7 @@ describe("mapAsync", () => {
 
 	it("should handle async functions that return different types", async () => {
 		const toStr = async (x: number): Promise<string> => x.toString();
-		const stringMapper = mapAsync(toStr);
+		const stringMapper = map(toStr);
 
 		const result = await stringMapper(42);
 		expect(result).toBe("42");
@@ -23,7 +23,7 @@ describe("mapAsync", () => {
 		const throwError = async (_: unknown): Promise<never> => {
 			throw new Error("Test error");
 		};
-		const errorMapper = mapAsync(throwError);
+		const errorMapper = map(throwError);
 
 		await expect(errorMapper("anything")).rejects.toThrow("Test error");
 	});
@@ -32,7 +32,7 @@ describe("mapAsync", () => {
 		const uppercaseAsync = async (str: string): Promise<string> =>
 			str.toUpperCase();
 
-		const res = await pipeAsync("dog", mapAsync(uppercaseAsync));
+		const res = await pipe("dog", map(uppercaseAsync));
 		expect(res).toBe("DOG");
 	});
 });

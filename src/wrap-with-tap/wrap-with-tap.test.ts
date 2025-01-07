@@ -9,10 +9,10 @@ import {
 	mock,
 	spyOn,
 } from "bun:test";
-import { pipe } from "../pipe-async";
-import { wrapWithTapAsync } from "./wrap-with-tap-async";
+import { pipe } from "../pipe";
+import { wrapWithTap } from "./wrap-with-tap";
 
-describe("wrapWithTapAsync", () => {
+describe("wrapWithTap", () => {
 	// ------------------------------------------------------------------------------------
 	// Mocks
 	// ------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ describe("wrapWithTapAsync", () => {
 		);
 
 		// Wrap the effects
-		const wrapped = wrapWithTapAsync<3, string>([effect1, effect2, effect3]);
+		const wrapped = wrapWithTap<3, string>([effect1, effect2, effect3]);
 
 		// ------------------------
 		// Act
@@ -129,7 +129,7 @@ describe("wrapWithTapAsync", () => {
 		// ------------------------
 		// Arrange
 		// ------------------------
-		const wrapped = wrapWithTapAsync<0, string>([]);
+		const wrapped = wrapWithTap<0, string>([]);
 
 		// ------------------------
 		// Act
@@ -151,7 +151,7 @@ describe("wrapWithTapAsync", () => {
 		const effectThatThrows = mock(async (x: string) => {
 			throw new Error("Intentional error from effect");
 		});
-		const wrapped = wrapWithTapAsync<1, string>([effectThatThrows]);
+		const wrapped = wrapWithTap<1, string>([effectThatThrows]);
 		const expectedPipedValue = "err-test";
 
 		// Act & Assert

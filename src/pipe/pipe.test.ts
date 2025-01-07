@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { pipeAsync } from "./pipe-async.utils";
+import { pipe } from "./pipe";
 
 // Helper async functions for testing
 /**
@@ -23,13 +23,13 @@ const toStr = async (x: number): Promise<string> => x.toString();
 const delay = async <T>(ms: number, value: T): Promise<T> =>
 	new Promise((resolve) => setTimeout(() => resolve(value), ms));
 
-describe("pipeAsync", () => {
+describe("pipe", () => {
 	it("should handle a single async function", async () => {
 		// Arrange
 		const initialValue = 1;
 
 		// Act
-		const result = await pipeAsync(initialValue, addOne);
+		const result = await pipe(initialValue, addOne);
 
 		// Assert
 		expect(result).toBe(2);
@@ -40,7 +40,7 @@ describe("pipeAsync", () => {
 		const initialValue = 1;
 
 		// Act
-		const result = await pipeAsync(initialValue, addOne, multiply, toStr);
+		const result = await pipe(initialValue, addOne, multiply, toStr);
 
 		// Assert
 		expect(result).toBe("4");
@@ -51,7 +51,7 @@ describe("pipeAsync", () => {
 		const initialValue = 2;
 
 		// Act
-		const result = await pipeAsync(
+		const result = await pipe(
 			initialValue,
 			multiply, // 2 * 2 = 4
 			addOne, // 4 + 1 = 5
@@ -67,7 +67,7 @@ describe("pipeAsync", () => {
 		const initialValue = 1;
 
 		// Act
-		const result = await pipeAsync(
+		const result = await pipe(
 			initialValue,
 			(x) => delay(10, x + 1), // => 2
 			(x) => delay(20, x * 2), // => 4
@@ -83,7 +83,7 @@ describe("pipeAsync", () => {
 		const toBoolean = async (str: string): Promise<boolean> => str === "true";
 
 		// Act
-		const result = await pipeAsync(
+		const result = await pipe(
 			initialValue,
 			toStr, // => "123"
 			() => Promise.resolve("true"), // => "true"
@@ -102,7 +102,7 @@ describe("pipeAsync", () => {
 
 		// Act & Assert
 		// Since we are expecting a rejected promise, pass the promise directly to `.rejects.toThrow()`
-		await expect(pipeAsync(1, addOne, throwError, multiply)).rejects.toThrow(
+		await expect(pipe(1, addOne, throwError, multiply)).rejects.toThrow(
 			"Test error",
 		);
 	});
@@ -112,7 +112,7 @@ describe("pipeAsync", () => {
 		const initialValue = 1;
 
 		// This chain adds 1 repeatedly
-		const result = await pipeAsync(
+		const result = await pipe(
 			initialValue,
 			addOne, // => 2
 			addOne, // => 3
