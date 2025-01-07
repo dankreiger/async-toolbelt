@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.1.8 (2025-01-07)</small>
+
+* fix: add map util ([1e70d90](https://github.com/dankreiger/async-toolbelt/commit/1e70d90))
+
 ## <small>0.1.7 (2025-01-05)</small>
 
 * fix: add map util ([01c49c1](https://github.com/dankreiger/async-toolbelt/commit/01c49c1))
