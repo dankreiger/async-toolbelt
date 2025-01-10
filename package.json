@@ -22,9 +22,7 @@
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"dist/**"
-	],
+	"files": ["dist/**"],
 	"scripts": {
 		"build": "bun clean && tsup",
 		"clean": "rm -rf dist",
