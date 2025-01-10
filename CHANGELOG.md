@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>0.1.9 (2025-01-10)</small>
+
+* chore: update README [skip-ci] ([99191ba](https://github.com/dankreiger/async-toolbelt/commit/99191ba))
+* chore: update README [skip-ci] ([49b5c44](https://github.com/dankreiger/async-toolbelt/commit/49b5c44))
+
 ## <small>0.1.8 (2025-01-07)</small>
 
 * fix: add map util ([1e70d90](https://github.com/dankreiger/async-toolbelt/commit/1e70d90))
