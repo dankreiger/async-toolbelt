@@ -6,13 +6,11 @@
   - [Usage Examples](#usage-examples)
     - [1. Composing Functions with `pipe`](#1-composing-functions-with-pipe)
     - [2. Adding Side Effects with `tap`](#2-adding-side-effects-with-tap)
-    - [3. Wrapping Functions with `wrapWithTap`](#3-wrapping-functions-with-wrapwithtap)
-    - [4. Transforming Values with `map`](#4-transforming-values-with-map)
-    - [5. Long Pipeline Example](#5-long-pipeline-example)
+    - [3. Transforming Values with `map`](#3-transforming-values-with-map)
+    - [4. Long Pipeline Example](#4-long-pipeline-example)
   - [API Reference](#api-reference)
     - [`pipe(input, ...fns)`](#pipeinput-fns)
     - [`tap(fn)`](#tapfn)
-    - [`wrapWithTap(fns)`](#wrapwithtapfns)
     - [`map(fn)`](#mapfn)
   - [Development (Bun)](#development-bun)
   - [Contributing](#contributing)
@@ -42,7 +40,7 @@ Use your preferred package manager:
 - **pnpm**:
 
   ```zsh
-  pnpm add --save-exact async-toolbelt 
+  pnpm add --save-exact async-toolbelt
   ```
 
 - **Yarn**:
@@ -54,7 +52,7 @@ Use your preferred package manager:
 - **npm**:
 
   ```zsh
-  npm install --save-exact async-toolbelt 
+  npm install --save-exact async-toolbelt
   ```
 
 ## Usage Examples
@@ -104,23 +102,7 @@ tap(logValue)('Hello World');
 // Returns a Promise resolved to "Hello World"
 ```
 
-### 3. Wrapping Functions with `wrapWithTap`
-
-```ts
-import { wrapWithTap } from 'async-toolbelt';
-
-// Wrap multiple functions at once
-const wrappedFunctions = wrapWithTap([
-  async (val: string) => console.log('First effect:', val),
-  (val: string) => console.log('Second effect:', val.toUpperCase()),
-]);
-
-// Each function logs and then returns the original input
-wrappedFunctions[0]('hello'); // Logs "First effect: hello"
-wrappedFunctions[1]('hello'); // Logs "Second effect: HELLO"
-```
-
-### 4. Transforming Values with `map`
+### 3. Transforming Values with `map`
 
 ```ts
 import { map } from 'async-toolbelt';
@@ -139,7 +121,7 @@ map(doubleSync)(5).then((res) => {
 });
 ```
 
-### 5. Long Pipeline Example
+### 4. Long Pipeline Example
 
 Here’s a more **declarative** example illustrating how `pipe` can simplify a multi-step workflow. In real-world scenarios, you might fetch data, transform it, log progress, and handle both sync and async steps without deeply nested callbacks.
 
@@ -203,37 +185,28 @@ The promise-based design keeps everything **composable**, **flat**, and **declar
 
 Executes a sequence of sync or async functions on an initial value. Supports up to 18 functions.
 
-- **Parameters**  
-  - `input`: initial value  
+- **Parameters**
+  - `input`: initial value
   - `...fns`: array of sync or async functions
-- **Returns**  
+- **Returns**
   A `Promise` resolving to the final result
 
 ### `tap(fn)`
 
 Inserts a side effect (e.g., logging) without changing the input.
 
-- **Parameters**  
+- **Parameters**
   - `fn`: a sync or async function that receives the input
-- **Returns**  
+- **Returns**
   A function that returns the original input as a `Promise`
-
-### `wrapWithTap(fns)`
-
-Wraps an array of functions so each function executes a side effect while returning the original input.
-
-- **Parameters**  
-  - `fns`: an array of sync or async functions
-- **Returns**  
-  An array of tapped functions
 
 ### `map(fn)`
 
 Transforms an input with a single sync or async function.
 
-- **Parameters**  
+- **Parameters**
   - `fn`: a function taking the input and returning a new value
-- **Returns**  
+- **Returns**
   A function that, given an input, returns a `Promise` of the transformed value
 
 ---
